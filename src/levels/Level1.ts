@@ -1,6 +1,6 @@
 import { LevelData, PlatformState, EnemyState, CoinState } from '../engine/GameEngine';
+import { GROUND_Y } from '../constants/GameConstants';
 
-const GROUND_Y = 480;
 const LEVEL_WIDTH = 390 * 6;
 
 function mkPlatform(x: number, y: number, width: number, type: PlatformState['type'] = 'static', extras: Partial<PlatformState> = {}): PlatformState {
@@ -33,7 +33,7 @@ function mkCoin(x: number, y: number): CoinState {
 export const Level1: LevelData = {
   background: 'forest',
   levelWidth: LEVEL_WIDTH,
-  levelHeight: 600,
+  levelHeight: GROUND_Y + 200,
   flag: { x: LEVEL_WIDTH - 80, y: GROUND_Y - 120 },
   platforms: [
     // Ground - split with gaps
