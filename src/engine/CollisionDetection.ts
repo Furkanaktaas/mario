@@ -39,35 +39,40 @@ export function resolvePlayerPlatformCollision(
     const overlapLeft = playerRight - platLeft;
     const overlapRight = platRight - playerLeft;
 
-    const minOverlap = Math.min(overlapTop, overlapBottom, overlapLeft, overlapRight);
+    const verticalOverlap = Math.min(overlapTop, overlapBottom);
+    const horizontalOverlap = Math.min(overlapLeft, overlapRight);
 
-    if (minOverlap === overlapTop && resolvedPlayer.velocityY >= 0) {
-      resolvedPlayer = {
-        ...resolvedPlayer,
-        y: platTop - resolvedPlayer.height,
-        velocityY: 0,
-        isOnGround: true,
-        isJumping: false,
-        animation: resolvedPlayer.velocityX !== 0 ? 'run' : 'idle',
-      };
-    } else if (minOverlap === overlapBottom && resolvedPlayer.velocityY < 0) {
-      resolvedPlayer = {
-        ...resolvedPlayer,
-        y: platBottom,
-        velocityY: 0,
-      };
-    } else if (minOverlap === overlapLeft) {
-      resolvedPlayer = {
-        ...resolvedPlayer,
-        x: platLeft - resolvedPlayer.width,
-        velocityX: 0,
-      };
-    } else if (minOverlap === overlapRight) {
-      resolvedPlayer = {
-        ...resolvedPlayer,
-        x: platRight,
-        velocityX: 0,
-      };
+    if (verticalOverlap < horizontalOverlap) {
+      if (overlapTop < overlapBottom && resolvedPlayer.velocityY >= 0) {
+        resolvedPlayer = {
+          ...resolvedPlayer,
+          y: platTop - resolvedPlayer.height,
+          velocityY: 0,
+          isOnGround: true,
+          isJumping: false,
+          animation: resolvedPlayer.velocityX !== 0 ? 'run' : 'idle',
+        };
+      } else if (overlapBottom <= overlapTop && resolvedPlayer.velocityY < 0) {
+        resolvedPlayer = {
+          ...resolvedPlayer,
+          y: platBottom,
+          velocityY: 0,
+        };
+      }
+    } else {
+      if (overlapLeft < overlapRight) {
+        resolvedPlayer = {
+          ...resolvedPlayer,
+          x: platLeft - resolvedPlayer.width,
+          velocityX: 0,
+        };
+      } else {
+        resolvedPlayer = {
+          ...resolvedPlayer,
+          x: platRight,
+          velocityX: 0,
+        };
+      }
     }
   }
 
